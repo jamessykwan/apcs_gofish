@@ -2,7 +2,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InitiateGame {
+public class Deck {
     protected ArrayDeque<Card> deck = new ArrayDeque<Card>();
 
     public void Initiate() {
@@ -36,11 +36,15 @@ public class InitiateGame {
 
 
     public void deal(HashMap<String, String> a, HashMap<String, String> b) {
-        for (int i = 0; i < 5; i++) {
+        while (a.size() < 5) {
             Card curr = deck.remove();
+            //System.out.println("p1 " + curr.getRank() + curr.getSuit());
             a.put(curr.getRank(), curr.getSuit());
-            Card curr1 = deck.remove();
-            b.put(curr1.getRank(), curr1.getSuit());
+        }
+        while (b.size() < 5) {
+            Card curr = deck.remove();
+            //System.out.println("p1 " + curr.getRank() + curr.getSuit());
+            b.put(curr.getRank(), curr.getSuit());
         }
     }
 
@@ -50,4 +54,5 @@ public class InitiateGame {
         Card curr1 = deck.remove();
         b.put(curr1.getRank(), curr1.getSuit());
     }
+
 }
