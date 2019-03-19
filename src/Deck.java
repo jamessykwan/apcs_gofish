@@ -18,6 +18,17 @@ public class Deck {
         size = cards.size();
     }
 
+
+    public void Initiate() {
+        String[] suits = {"Hearts", "Diamonds", "Spades", "Clubs"};
+        String[] ranks = {"One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"};
+        for (int i = 0; i < suits.length; i++) {
+            for (int j = 0; j < ranks.length; j++) {
+                cards.push(new Card(suits[i], ranks[j]));
+            }
+        }
+    }
+
     public void shuffle() {
         ArrayList<Card> shuffledDeck = new ArrayList<>();
 
@@ -38,25 +49,48 @@ public class Deck {
     }
 
 
-    public void deal(HashMap<String, String> a, HashMap<String, String> b) {
-        while (a.size() < 5) {
-            Card curr = cards.remove();
-            //System.out.println("p1 " + curr.getRank() + curr.getSuit());
-            a.put(curr.getRank(), curr.getSuit());
-        }
-        while (b.size() < 5) {
-            Card curr = cards.remove();
-            //System.out.println("p1 " + curr.getRank() + curr.getSuit());
-            b.put(curr.getRank(), curr.getSuit());
+    public void deal(HashMap<String, ArrayList<Card>> a, HashMap<String, ArrayList<Card>> b, String nameOfGame) {
+        if (nameOfGame.toLowerCase().equals("gofish")) {
+            for (int i = 0; i < 5; i++) {
+                Card curr = cards.remove();
+                if (a.containsKey(curr.getRank())) {
+                    ArrayList<Card> card = a.get(curr.getRank());
+                    card.add(curr);
+                    a.put(curr.getRank(), card);
+                } else {
+                    ArrayList<Card> card = new ArrayList<Card>();
+                    card.add(curr);
+                    a.put(curr.getRank(), card);
+                }
+            }
+            for (int i = 0; i < 5; i++) {
+                Card curr = cards.remove();
+                if (b.containsKey(curr.getRank())) {
+                    ArrayList<Card> card = b.get(curr.getRank());
+                    card.add(curr);
+                    b.put(curr.getRank(), card);
+                } else {
+                    ArrayList<Card> card = new ArrayList<Card>();
+                    card.add(curr);
+                    b.put(curr.getRank(), card);
+                }
+            }
         }
     }
 
-    public void dealOne(HashMap<String, String> a, HashMap<String, String> b) {
+    public void dealOne(HashMap<String, ArrayList<Card>> a) {
         Card curr = cards.remove();
-        a.put(curr.getRank(), curr.getSuit());
-        Card curr1 = cards.remove();
-        b.put(curr1.getRank(), curr1.getSuit());
+        if (a.containsKey(curr.getRank())) {
+            ArrayList<Card> card = a.get(curr.getRank());
+            card.add(curr);
+            a.put(curr.getRank(), card);
+        } else {
+            ArrayList<Card> card = new ArrayList<>();
+            card.add(curr);
+            a.put(curr.getRank(), card);
+        }
     }
+
 
     public int getSize() {
         return size;
