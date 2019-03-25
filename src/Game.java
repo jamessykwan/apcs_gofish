@@ -37,10 +37,14 @@ class Game {
                     gui.gamePanel.playerPanels.get(players.get(1)).isPlaying();
                     gui.gamePanel.playerPanels.get(players.get(0)).isNotPlaying();
                     playFullTurn(player, players.get(0));
+                    gui.gamePanel.current.setCards(players.get(1).getHand(), true);
+                    gui.gamePanel.playerPanels.get(gui.gamePanel.player1).setCards(players.get(0).getHand(), true);
                 } else {
                     gui.gamePanel.playerPanels.get(players.get(0)).isPlaying();
                     gui.gamePanel.playerPanels.get(players.get(1)).isNotPlaying();
                     playFullTurn(player, players.get(1));
+                    gui.gamePanel.current.setCards(players.get(0).getHand(), true);
+                    gui.gamePanel.playerPanels.get(gui.gamePanel.player1).setCards(players.get(0).getHand(), true);
 
                 }
             } else {
@@ -52,6 +56,7 @@ class Game {
                 // One player is left or no more series can be assembled
                 break;
             }
+
             turncount++;
         }
     }
@@ -64,14 +69,16 @@ class Game {
                 System.out.println(cardLabel.getCard().getRank() + cardLabel.getCard().getSuit());
                 if (player.makeCardRequest(opponent, cardLabel.getCard().getRank())) {
                     System.out.println("Player contains");
-                    player.respondCardRequest(player, opponent, cardLabel.getCard());
+                    player.respondCardRequest(opponent, cardLabel.getCard());
                     gui.gamePanel.current.isSelected = false;
                 } else {
                     System.out.println("abc");
+                    player.goFish();
                     gui.gamePanel.current.isSelected = false;
                     break;
                 }
             }
+
         }
 
     }

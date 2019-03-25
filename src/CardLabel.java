@@ -25,7 +25,6 @@ public class CardLabel extends JLabel {
         icon = card.getImage();
         setRevealed(revealed);
         setBorder(border);
-        System.out.println("card initialized");
     }
 
     public Card getCard() {

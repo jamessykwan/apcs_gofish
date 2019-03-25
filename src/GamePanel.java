@@ -12,10 +12,12 @@ public class GamePanel extends JPanel {
     private static DeckPanel deckPanel;
     public Map<Player, CardsPanel> playerPanels = new HashMap<>();
     public CardsPanel current;
+    Player player1;
     private CardsPanel lastClicked;
     private MouseListener listener = new LastClickedListener();
 
     public CardsPanel addPlayer(Player player) {
+        player1 = player;
         this.validate();
         CardsPanel panel = new CardsPanel();
         panel.initComponents();

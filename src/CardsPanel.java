@@ -32,6 +32,7 @@ public class CardsPanel extends JLayeredPane implements MouseListener {
         for (Map.Entry<String, ArrayList<Card>> entry : cards.entrySet()) {
             //System.out.println(entry.getKey() + "/" + entry.getValue());
             for (Card card : entry.getValue()) {
+                System.out.println(card.getRank() + card.getSuit());
                 CardLabel cardLabel = new CardLabel(card, revealed);
                 addCard(cardLabel, index);
                 cardLabel.setRevealed(true);

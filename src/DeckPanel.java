@@ -1,13 +1,13 @@
 import javax.swing.*;
 
-public class DeckPanel extends JPanel {
+class DeckPanel extends JPanel {
     private Deck deck;
     private JLabel deckLabel;
 
     DeckPanel() {
     }
 
-    public void initComponents() {
+    void initComponents() {
         this.deck = new Deck();
         deck.Initiate();
         deck.shuffle();
@@ -15,7 +15,7 @@ public class DeckPanel extends JPanel {
         this.revalidate();
     }
 
-    public Deck getDeck() {
+    Deck getDeck() {
         return deck;
     }
 }

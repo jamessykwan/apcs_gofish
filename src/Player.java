@@ -34,7 +34,7 @@ class Player {
 
         //if the card is in the opponent's hand, then return true. otherwise, false.
 
-        if (opponent.getHand().containsKey(rank)) {
+        if (opponent.hand.containsKey(rank)) {
             opponentHasCard = true;
             return opponentHasCard;
         }
@@ -43,15 +43,23 @@ class Player {
         return opponentHasCard;
     }
 
-    void respondCardRequest(Player player, Player opponent, Card a) {
+    void respondCardRequest(Player opponent, Card a) {
 
         if (opponent.hand.containsKey(a.getRank())) {
             ArrayList<Card> temp = opponent.hand.get(a.getRank());
             opponent.hand.remove(a.getRank());
-            player.hand.put(a.getRank(), temp);
-        } else {
-            deck.dealOne(player.hand);
+            if (hand.containsKey(a.getRank())) {
+                ArrayList<Card> temp1 = hand.get(a.getRank());
+                temp1.addAll(temp);
+                hand.put(a.getRank(), temp1);
+            } else {
+                hand.put(a.getRank(), temp);
+            }
         }
+    }
+
+    void goFish() {
+        deck.dealOne(this.hand);
     }
 
     public void removeCard(Card card) {
