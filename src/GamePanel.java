@@ -18,6 +18,7 @@ public class GamePanel extends JPanel {
     public CardsPanel addPlayer(Player player) {
         this.validate();
         CardsPanel panel = new CardsPanel();
+        panel.initComponents();
         panel.setOpaque(true);
         panel.setCards(player.getHand(), true);
         panel.addMouseListener(listener);
@@ -53,13 +54,8 @@ public class GamePanel extends JPanel {
         lastClicked = player;
     }
 
-    public void setCurrentPlayer(Player player) {
-        if (current != null) {
-            current.isNotPlaying();
-        }
-        CardsPanel panel = playerPanels.get(player);
-        panel.isPlaying();
-        current = panel;
+    void setCurrentPlayer(Player player) {
+        current = playerPanels.get(player);
     }
 
     public CardsPanel getCardsPanel(Player player) {

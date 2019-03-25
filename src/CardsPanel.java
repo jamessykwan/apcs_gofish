@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CardsPanel extends JLayeredPane {
+public class CardsPanel extends JLayeredPane implements MouseListener {
 
     final public static int SPACING = 150; // Spacing between overlapping cards
     final private static Color PLAYING_BACKGROUND = new Color(0xAFFF8A);
@@ -16,8 +16,17 @@ public class CardsPanel extends JLayeredPane {
     private JLabel remainingCardsLabel;
     private JLabel remainingCardsCount;
 
+    void initComponents() {
+        remainingCardsLabel = new JLabel("Remaining cards:");
+        add(remainingCardsLabel);
+        remainingCardsLabel.setVisible(true);
 
-    public void setCards(HashMap<String, ArrayList<Card>> cards, boolean revealed) {
+        remainingCardsCount = new JLabel("0");
+        remainingCardsCount.setVisible(true);
+        add(remainingCardsCount);
+    }
+
+    void setCards(HashMap<String, ArrayList<Card>> cards, boolean revealed) {
         removeAll();
         int index = 0;
         for (Map.Entry<String, ArrayList<Card>> entry : cards.entrySet()) {
@@ -47,32 +56,7 @@ public class CardsPanel extends JLayeredPane {
     public void addCard(CardLabel cardLabel, int index) {
         // Add card with appropriate z-index
         this.add(cardLabel, new Integer(index));
-        cardLabel.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                cardSelected = cardLabel;
-                isSelected = true;
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                cardLabel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                cardLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-            }
-        });
+        cardLabel.addMouseListener(this);
         cardLabel.setLocation(100 + SPACING * index, 80);
     }
 
@@ -105,4 +89,33 @@ public class CardsPanel extends JLayeredPane {
     }
 
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        JLabel label = (JLabel) e.getSource();
+        cardSelected = (CardLabel) label;
+        isSelected = true;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        JLabel label = (JLabel) e.getSource();
+        label.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        JLabel label = (JLabel) e.getSource();
+        label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
+    }
 }

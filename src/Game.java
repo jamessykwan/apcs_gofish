@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 
 class Game {
 
@@ -25,15 +24,25 @@ class Game {
 
     private void loop() {
         System.out.println("Starting game loop");
+        int turncount = 0;
 
         // Create a temp list to cycle
         players = new ArrayList<>(gui.gamePanel.playerPanels.keySet());
-        Iterator<Player> iterator = players.iterator();
         while (!players.isEmpty()) {
-            Player player = iterator.next();
+            int curr = turncount % 2;
+            Player player = players.get(curr);
 
-            if (player.canPlay()) {
-                playFullTurn(player, iterator.next());
+            if (canPlay()) {
+                if (curr == 1) {
+                    gui.gamePanel.playerPanels.get(players.get(1)).isPlaying();
+                    gui.gamePanel.playerPanels.get(players.get(0)).isNotPlaying();
+                    playFullTurn(player, players.get(0));
+                } else {
+                    gui.gamePanel.playerPanels.get(players.get(0)).isPlaying();
+                    gui.gamePanel.playerPanels.get(players.get(1)).isNotPlaying();
+                    playFullTurn(player, players.get(1));
+
+                }
             } else {
                 // Player is out of the game
                 players.remove(player);
@@ -43,19 +52,13 @@ class Game {
                 // One player is left or no more series can be assembled
                 break;
             }
-            iterator = players.listIterator();
-            iterator.next();
-
-
+            turncount++;
         }
     }
 
     private void playFullTurn(Player player, Player opponent) {
-        System.out.println("select card");
-        gui.playerTurn(player);
         while (true) {
-            System.out.println(gui.gamePanel.current.isSelected());
-
+            gui.playerTurn(player);
             if (gui.gamePanel.current.isSelected()) {
                 CardLabel cardLabel = gui.gamePanel.current.getCardSelected();
                 System.out.println(cardLabel.getCard().getRank() + cardLabel.getCard().getSuit());
