@@ -3,15 +3,14 @@ import java.io.File;
 
 public class Card {
     private String suit;
-    private String Rank;
+    private String rank;
     private ImageIcon image;
 
     public Card(String a, String b) {
         suit = a;
-        Rank = b;
-        String path = "images/" + Rank + suit + ".png";
+        rank = b;
+        String path = "images/" + rank + suit + ".png";
         File f = new File(path);
-        System.out.println(f.exists());
         image = new ImageIcon(path);
     }
 
@@ -24,7 +23,7 @@ public class Card {
     }
 
     public String toString() {
-        return (Rank + " of " + suit);
+        return (rank + " of " + suit);
     }
 
     public String getSuit() {
@@ -36,10 +35,10 @@ public class Card {
     }
 
     public String getRank() {
-        return Rank;
+        return rank;
     }
 
     public void setRank(String rank) {
-        Rank = rank;
+        this.rank = rank;
     }
 }

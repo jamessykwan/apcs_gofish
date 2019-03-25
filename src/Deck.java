@@ -49,7 +49,7 @@ public class Deck {
     }
 
 
-    public void deal(HashMap<String, ArrayList<Card>> a, HashMap<String, ArrayList<Card>> b, String nameOfGame) {
+    public void deal(HashMap<String, ArrayList<Card>> a, String nameOfGame) {
         if (nameOfGame.toLowerCase().equals("gofish")) {
             for (int i = 0; i < 5; i++) {
                 Card curr = cards.remove();
@@ -58,23 +58,12 @@ public class Deck {
                     card.add(curr);
                     a.put(curr.getRank(), card);
                 } else {
-                    ArrayList<Card> card = new ArrayList<Card>();
+                    ArrayList<Card> card = new ArrayList<>();
                     card.add(curr);
                     a.put(curr.getRank(), card);
                 }
             }
-            for (int i = 0; i < 5; i++) {
-                Card curr = cards.remove();
-                if (b.containsKey(curr.getRank())) {
-                    ArrayList<Card> card = b.get(curr.getRank());
-                    card.add(curr);
-                    b.put(curr.getRank(), card);
-                } else {
-                    ArrayList<Card> card = new ArrayList<Card>();
-                    card.add(curr);
-                    b.put(curr.getRank(), card);
-                }
-            }
+
         }
     }
 
