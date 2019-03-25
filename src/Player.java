@@ -8,7 +8,6 @@ class Player {
 
     private ArrayList<Card> hand_all = new ArrayList<>();
     private Player opponent;
-    private boolean opponentHasCard;
 
     private Deck deck;
 
@@ -29,9 +28,9 @@ class Player {
         return deck;
     }
 
-    public boolean makeCardRequest(Player opponent, String rank) {
+    boolean makeCardRequest(Player opponent, String rank) {
         this.opponent = opponent;
-        opponentHasCard = false;
+        boolean opponentHasCard = false;
 
         //if the card is in the opponent's hand, then return true. otherwise, false.
 
@@ -44,13 +43,15 @@ class Player {
         return opponentHasCard;
     }
 
-    public ArrayList<Card> respondCardRequest(String rank) {
+    void respondCardRequest(Player player, Player opponent, Card a) {
 
-        ArrayList<Card> foundCards = new ArrayList<>(hand.get(rank));
-        for (Card c : foundCards) {
-            removeCard(c);
+        if (opponent.hand.containsKey(a.getRank())) {
+            ArrayList<Card> temp = opponent.hand.get(a.getRank());
+            opponent.hand.remove(a.getRank());
+            player.hand.put(a.getRank(), temp);
+        } else {
+            deck.dealOne(player.hand);
         }
-        return foundCards;
     }
 
     public void removeCard(Card card) {

@@ -18,12 +18,12 @@ public class GamePanel extends JPanel {
     public CardsPanel addPlayer(Player player) {
         this.validate();
         CardsPanel panel = new CardsPanel();
+        panel.setOpaque(true);
         panel.setCards(player.getHand(), true);
         panel.addMouseListener(listener);
         this.add(panel);
         playerPanels.put(player, panel);
         System.out.println("panel init");
-        current = panel;
         this.setVisible(true);
         this.revalidate();
         return panel;

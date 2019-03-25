@@ -9,10 +9,13 @@ import java.util.Map;
 public class CardsPanel extends JLayeredPane {
 
     final public static int SPACING = 150; // Spacing between overlapping cards
-    final private static Color PLAYING_BACKGROUND = new Color(0xFFFEDF);
+    final private static Color PLAYING_BACKGROUND = new Color(0xAFFF8A);
     Player player;
     CardLabel cardSelected;
     boolean isSelected;
+    private JLabel remainingCardsLabel;
+    private JLabel remainingCardsCount;
+
 
     public void setCards(HashMap<String, ArrayList<Card>> cards, boolean revealed) {
         removeAll();
@@ -34,6 +37,7 @@ public class CardsPanel extends JLayeredPane {
 
     public void isPlaying() {
         setBackground(PLAYING_BACKGROUND);
+        revalidate();
     }
 
     public void isNotPlaying() {
@@ -57,7 +61,6 @@ public class CardsPanel extends JLayeredPane {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-
             }
 
             @Override
@@ -70,8 +73,22 @@ public class CardsPanel extends JLayeredPane {
                 cardLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
             }
         });
-        System.out.println("card added");
         cardLabel.setLocation(100 + SPACING * index, 80);
+    }
+
+    public final void updatePanels() {
+        updateHand();
+        //updateComplete();
+    }
+
+    public void updateHand() {
+        HashMap<String, ArrayList<Card>> hand = player.getHand();
+        setCards(hand, true);
+        updateInfoBox(remainingCardsCount, hand.size());
+    }
+
+    private void updateInfoBox(JLabel label, int num) {
+        label.setText(Integer.toString(num));
     }
 
     public CardLabel getCardSelected() {

@@ -44,27 +44,31 @@ class Game {
                 break;
             }
             iterator = players.listIterator();
+            iterator.next();
 
 
         }
     }
 
     private void playFullTurn(Player player, Player opponent) {
+        System.out.println("select card");
+        gui.playerTurn(player);
         while (true) {
-            gui.playerTurn(player);
-            System.out.println("select card");
+            System.out.println(gui.gamePanel.current.isSelected());
 
             if (gui.gamePanel.current.isSelected()) {
-                System.out.println("card selected");
                 CardLabel cardLabel = gui.gamePanel.current.getCardSelected();
                 System.out.println(cardLabel.getCard().getRank() + cardLabel.getCard().getSuit());
                 if (player.makeCardRequest(opponent, cardLabel.getCard().getRank())) {
-                    System.out.println("valid request");
+                    System.out.println("Player contains");
+                    player.respondCardRequest(player, opponent, cardLabel.getCard());
+                    gui.gamePanel.current.isSelected = false;
                 } else {
+                    System.out.println("abc");
+                    gui.gamePanel.current.isSelected = false;
                     break;
                 }
             }
-
         }
 
     }
