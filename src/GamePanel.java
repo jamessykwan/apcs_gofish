@@ -35,6 +35,7 @@ public class GamePanel extends JPanel {
         repaint();
     }
 
+
     synchronized public CardsPanel getLastClicked() {
         if (lastClicked == null) {
             try {

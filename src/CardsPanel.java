@@ -11,6 +11,8 @@ public class CardsPanel extends JLayeredPane {
     final public static int SPACING = 150; // Spacing between overlapping cards
     final private static Color PLAYING_BACKGROUND = new Color(0xFFFEDF);
     Player player;
+    CardLabel cardSelected;
+    boolean isSelected;
 
     public void setCards(HashMap<String, ArrayList<Card>> cards, boolean revealed) {
         removeAll();
@@ -44,7 +46,8 @@ public class CardsPanel extends JLayeredPane {
         cardLabel.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                cardSelected = cardLabel;
+                isSelected = true;
             }
 
             @Override
@@ -59,9 +62,7 @@ public class CardsPanel extends JLayeredPane {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                JLabel temp = (JLabel) e.getSource();
-                if (temp == cardLabel)
-                    cardLabel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+                cardLabel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
             }
 
             @Override
@@ -71,6 +72,14 @@ public class CardsPanel extends JLayeredPane {
         });
         System.out.println("card added");
         cardLabel.setLocation(100 + SPACING * index, 80);
+    }
+
+    public CardLabel getCardSelected() {
+        return cardSelected;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
     }
 
     private void updatePreferredSize(int numCards) {

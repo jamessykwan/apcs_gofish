@@ -10,6 +10,8 @@ class GUI extends JFrame implements KeyListener, MouseMotionListener, ActionList
     private static Border highlight;
     GamePanel gamePanel;
     DeckPanel deckPanel;
+
+
     private JLabel statusBar;
 
     private void drawGame() {
