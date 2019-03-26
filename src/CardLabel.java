@@ -2,10 +2,11 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
-public class CardLabel extends JLabel {
-    final public static int CARD_WIDTH = 150;
+class CardLabel extends JLabel {
 
-    final public static int CARD_HEIGHT = 350;
+    final static int CARD_WIDTH = 150;
+
+    final static int CARD_HEIGHT = 350;
 
     final private static ImageIcon BACK = new ImageIcon("src/images/back.png");
 
@@ -16,7 +17,7 @@ public class CardLabel extends JLabel {
 
     private ImageIcon icon;
 
-    public CardLabel(Card card, boolean revealed) {
+    CardLabel(Card card, boolean revealed) {
         Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
         this.card = card;
         setVerticalTextPosition(JLabel.CENTER);
@@ -26,14 +27,15 @@ public class CardLabel extends JLabel {
         setRevealed(revealed);
         setBorder(border);
         setOpaque(true);
-        setBackground(Color.GRAY);
+        Color bgColor = new Color(241, 241, 234);
+        setBackground(bgColor);
     }
 
-    public Card getCard() {
+    Card getCard() {
         return card;
     }
 
-    final public void setRevealed(boolean flag) {
+    final void setRevealed(boolean flag) {
         if (flag) {
             // Reveal card
             if (icon != null) {

@@ -1,13 +1,10 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 class Player {
 
     private HashMap<String, ArrayList<Card>> hand;
-
     private ArrayList<Card> hand_all = new ArrayList<>();
-
+    private Collection<Series> completeSeries = new LinkedList<>();
     private Deck deck;
 
 
@@ -18,12 +15,6 @@ class Player {
             hand_all.addAll(cards);
         }
         this.deck = deck;
-    }
-
-    public Deck doTurn(Deck deck, Player opponent) {
-        this.deck = deck;
-        ArrayList<Card> foundCards = new ArrayList<Card>();
-        return deck;
     }
 
     boolean makeCardRequest(Player opponent, String rank) {
@@ -63,10 +54,6 @@ class Player {
         return hand_all.contains(card);
     }
 
-    public void addCard(Card card) {
-        hand.get(card.getRank()).add(card);
-        hand_all.add(card);
-    }
 
     public boolean canPlay() {
         return !hand.isEmpty();
@@ -74,5 +61,47 @@ class Player {
 
     HashMap<String, ArrayList<Card>> getHand() {
         return hand;
+    }
+
+    public Collection<Series> getCompleteSeries() {
+        return completeSeries;
+    }
+
+    /**
+     * @return total number of cards player has (in hand and in completed series
+     */
+    public int numCards() {
+        int size = 0;
+        int cardsInCompletedSeries = completeSeries.size() * 4;
+        for (ArrayList<Card> list : hand.values()) {
+            size += list.size();
+        }
+        return (size + cardsInCompletedSeries);
+    }
+
+    private Set<String> ranks() {
+        return hand.keySet();
+    }
+
+
+    private int seriesSize(String rank) {
+        return hand.get(rank).size();
+    }
+
+    /**
+     * Check if there's a complete series in hand
+     *
+     * @return the completed series if it exists, null otherwise
+     */
+    Series checkComplete() {
+        for (String rank : ranks()) {
+            if (seriesSize(rank) == 4) {
+                ArrayList<Card> cards = hand.remove(rank);
+                Series series = new Series(rank, cards);
+                completeSeries.add(series);
+                return series;
+            }
+        }
+        return null;
     }
 }

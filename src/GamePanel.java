@@ -12,12 +12,12 @@ public class GamePanel extends JPanel {
     private static DeckPanel deckPanel;
     public Map<Player, CardsPanel> playerPanels = new HashMap<>();
     public CardsPanel current;
-    Player player1;
+    private Player player;
     private CardsPanel lastClicked;
     private MouseListener listener = new LastClickedListener();
 
     public CardsPanel addPlayer(Player player) {
-        player1 = player;
+        this.player = player;
         this.validate();
         CardsPanel panel = new CardsPanel();
         panel.initComponents();
@@ -25,6 +25,8 @@ public class GamePanel extends JPanel {
         panel.setCards(player, true);
         panel.addMouseListener(listener);
         this.add(panel);
+        this.add(panel.add(panel.getCompletedSeriesCount()));
+        panel.updatePanels(player, true);
         playerPanels.put(player, panel);
         System.out.println("panel init");
         this.setVisible(true);
@@ -58,6 +60,10 @@ public class GamePanel extends JPanel {
 
     void setCurrentPlayer(Player player) {
         current = playerPanels.get(player);
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public CardsPanel getCardsPanel(Player player) {

@@ -3,21 +3,30 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 public class CardsPanel extends JLayeredPane implements MouseListener {
 
-    final public static int SPACING = 150; // Spacing between overlapping cards
-    final private static Color PLAYING_BACKGROUND = new Color(0xAFFF8A);
+    private final static int SPACING = 150; // Spacing between overlapping cards
+    final private static Color PLAYING_BACKGROUND = new Color(0xFF9189);
     Player player;
-    CardLabel cardSelected;
+    private CardLabel cardSelected;
     boolean isSelected;
     private int zindex;
-    private JLabel remainingCardsLabel;
+    private JLabel playerStatus;
     private JLabel remainingCardsCount;
+    private boolean showCompletedSeries = false;
+    private JLabel completedSeriesCount;
+
+    public void showCompletedSeries(boolean flag) {
+        showCompletedSeries = flag;
+    }
 
     void initComponents() {
-        remainingCardsLabel = new JLabel("Remaining cards:");
+        completedSeriesCount = new JLabel("Series: 0");
+        completedSeriesCount = new JLabel("Series: 0");
+        JLabel remainingCardsLabel = new JLabel("Remaining cards:");
         add(remainingCardsLabel);
         remainingCardsLabel.setVisible(true);
 
@@ -45,47 +54,60 @@ public class CardsPanel extends JLayeredPane implements MouseListener {
         this.revalidate();
     }
 
-    public void isPlaying() {
+    void isPlaying() {
         setBackground(PLAYING_BACKGROUND);
         revalidate();
     }
 
-    public void isNotPlaying() {
-        setBackground(null);
+    void isNotPlaying() {
+        Color color = new Color(97, 95, 94);
+        setBackground(color);
     }
 
-    public void addCard(CardLabel cardLabel, int index) {
+    private void addCard(CardLabel cardLabel, int index) {
         // Add card with appropriate z-index
         this.add(cardLabel, new Integer(index));
         cardLabel.addMouseListener(this);
         cardLabel.setLocation(100 + SPACING * index, 80);
     }
 
-    public final void updatePanels(Player player) {
-        updateHand(player);
-        //updateComplete();
+    void updatePanels(Player player, boolean revealed) {
+        updateHand(player, revealed);
+        updateSeries(player);
     }
 
-    public void updateHand(Player player) {
-        setCards(player, true);
+    JLabel getCompletedSeriesCount() {
+        return completedSeriesCount;
+    }
+
+    private void updateSeries(Player player) {
+        player.checkComplete();
+        Collection<Series> completeSeries = player.getCompleteSeries();
+        updateInfoBox(completedSeriesCount, completeSeries.size());
+    }
+
+    private void updateHand(Player player, boolean revealed) {
+        setCards(player, revealed);
         updateInfoBox(remainingCardsCount, player.getHand().size());
     }
 
     private void updateInfoBox(JLabel label, int num) {
-        label.setText(Integer.toString(num));
+        label.setText("Series count : " + num);
     }
 
-    public CardLabel getCardSelected() {
+    CardLabel getCardSelected() {
         return cardSelected;
     }
 
-    public boolean isSelected() {
+    boolean isSelected() {
         return isSelected;
     }
 
-    public void updatePreferredSize(int numCards) {
+    private void updatePreferredSize(int numCards) {
         int width = (50 + (numCards - 1) * SPACING) + CardLabel.CARD_WIDTH;
-        setPreferredSize(new Dimension(width, CardLabel.CARD_HEIGHT));
+        setPreferredSize(new Dimension(width + 200, CardLabel.CARD_HEIGHT + 50));
+        revalidate();
+        repaint();
     }
 
 

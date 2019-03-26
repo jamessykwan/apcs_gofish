@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 class Game {
-
     ArrayList<Player> players = new ArrayList<>();
     // gui instance
     private GUI gui;
@@ -21,40 +20,34 @@ class Game {
         //end();
     }
 
-
     private void loop() {
         System.out.println("Starting game loop");
         int turncount = 0;
-
         // Create a temp list to cycle
         players = new ArrayList<>(gui.gamePanel.playerPanels.keySet());
         while (!players.isEmpty()) {
             int curr = turncount % 2;
             Player player = players.get(curr);
-
             if (canPlay()) {
                 if (curr == 1) {
                     gui.gamePanel.playerPanels.get(players.get(1)).isPlaying();
                     gui.gamePanel.playerPanels.get(players.get(0)).isNotPlaying();
                     playFullTurn(player, players.get(0));
-
                 } else {
                     gui.gamePanel.playerPanels.get(players.get(0)).isPlaying();
                     gui.gamePanel.playerPanels.get(players.get(1)).isNotPlaying();
                     playFullTurn(player, players.get(1));
                 }
-                gui.gamePanel.playerPanels.get(players.get(0)).setCards(players.get(0), true);
-                gui.gamePanel.playerPanels.get(players.get(1)).setCards(players.get(1), true);
+                gui.gamePanel.playerPanels.get(players.get(0)).updatePanels(players.get((0)), true);
+                gui.gamePanel.playerPanels.get(players.get(1)).updatePanels(players.get((1)), true);
             } else {
                 // Player is out of the game
                 players.remove(player);
             }
-
             if (players.size() == 1 || !canPlay()) {
                 // One player is left or no more series can be assembled
                 break;
             }
-
             turncount++;
         }
     }
@@ -68,22 +61,20 @@ class Game {
                 if (player.makeCardRequest(opponent, cardLabel.getCard().getRank())) {
                     System.out.println("Player contains");
                     player.respondCardRequest(opponent, cardLabel.getCard());
+                    gui.gamePanel.playerPanels.get(player).updatePanels(player, true);
+                    gui.gamePanel.playerPanels.get(opponent).updatePanels(opponent, true);
                     gui.gamePanel.current.isSelected = false;
-                    gui.gamePanel.playerPanels.get(player).setCards(player, true);
-                    gui.gamePanel.playerPanels.get(opponent).setCards(opponent, true);
 
                 } else {
                     System.out.println("abc");
                     player.goFish();
-                    gui.gamePanel.playerPanels.get(player).setCards(player, true);
-                    gui.gamePanel.playerPanels.get(opponent).setCards(opponent, true);
+                    gui.gamePanel.playerPanels.get(player).updatePanels(player, true);
+                    gui.gamePanel.playerPanels.get(opponent).updatePanels(opponent, true);
                     gui.gamePanel.current.isSelected = false;
                     break;
                 }
             }
-
         }
-
     }
 
     // needs to be implemented
