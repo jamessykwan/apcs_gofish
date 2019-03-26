@@ -7,7 +7,6 @@ class Player {
     private HashMap<String, ArrayList<Card>> hand;
 
     private ArrayList<Card> hand_all = new ArrayList<>();
-    private Player opponent;
 
     private Deck deck;
 
@@ -23,30 +22,19 @@ class Player {
 
     public Deck doTurn(Deck deck, Player opponent) {
         this.deck = deck;
-        this.opponent = opponent;
         ArrayList<Card> foundCards = new ArrayList<Card>();
         return deck;
     }
 
     boolean makeCardRequest(Player opponent, String rank) {
-        this.opponent = opponent;
-        boolean opponentHasCard = false;
-
         //if the card is in the opponent's hand, then return true. otherwise, false.
-
-        if (opponent.hand.containsKey(rank)) {
-            opponentHasCard = true;
-            return opponentHasCard;
-        }
-
-
-        return opponentHasCard;
+        return opponent.hand.containsKey(rank);
     }
 
     void respondCardRequest(Player opponent, Card a) {
 
         if (opponent.hand.containsKey(a.getRank())) {
-            ArrayList<Card> temp = opponent.hand.get(a.getRank());
+            ArrayList<Card> temp = hand.get(a.getRank());
             opponent.hand.remove(a.getRank());
             if (hand.containsKey(a.getRank())) {
                 ArrayList<Card> temp1 = hand.get(a.getRank());

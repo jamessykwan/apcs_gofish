@@ -37,16 +37,14 @@ class Game {
                     gui.gamePanel.playerPanels.get(players.get(1)).isPlaying();
                     gui.gamePanel.playerPanels.get(players.get(0)).isNotPlaying();
                     playFullTurn(player, players.get(0));
-                    gui.gamePanel.current.setCards(players.get(1).getHand(), true);
-                    gui.gamePanel.playerPanels.get(gui.gamePanel.player1).setCards(players.get(0).getHand(), true);
+
                 } else {
                     gui.gamePanel.playerPanels.get(players.get(0)).isPlaying();
                     gui.gamePanel.playerPanels.get(players.get(1)).isNotPlaying();
                     playFullTurn(player, players.get(1));
-                    gui.gamePanel.current.setCards(players.get(0).getHand(), true);
-                    gui.gamePanel.playerPanels.get(gui.gamePanel.player1).setCards(players.get(0).getHand(), true);
-
                 }
+                gui.gamePanel.playerPanels.get(players.get(0)).setCards(players.get(0), true);
+                gui.gamePanel.playerPanels.get(players.get(1)).setCards(players.get(1), true);
             } else {
                 // Player is out of the game
                 players.remove(player);
@@ -71,9 +69,14 @@ class Game {
                     System.out.println("Player contains");
                     player.respondCardRequest(opponent, cardLabel.getCard());
                     gui.gamePanel.current.isSelected = false;
+                    gui.gamePanel.playerPanels.get(player).setCards(player, true);
+                    gui.gamePanel.playerPanels.get(opponent).setCards(opponent, true);
+
                 } else {
                     System.out.println("abc");
                     player.goFish();
+                    gui.gamePanel.playerPanels.get(player).setCards(player, true);
+                    gui.gamePanel.playerPanels.get(opponent).setCards(opponent, true);
                     gui.gamePanel.current.isSelected = false;
                     break;
                 }

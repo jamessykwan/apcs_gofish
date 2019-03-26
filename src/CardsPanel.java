@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class CardsPanel extends JLayeredPane implements MouseListener {
@@ -13,6 +12,7 @@ public class CardsPanel extends JLayeredPane implements MouseListener {
     Player player;
     CardLabel cardSelected;
     boolean isSelected;
+    private int zindex;
     private JLabel remainingCardsLabel;
     private JLabel remainingCardsCount;
 
@@ -26,13 +26,13 @@ public class CardsPanel extends JLayeredPane implements MouseListener {
         add(remainingCardsCount);
     }
 
-    void setCards(HashMap<String, ArrayList<Card>> cards, boolean revealed) {
+    void setCards(Player player, boolean revealed) {
         removeAll();
         int index = 0;
-        for (Map.Entry<String, ArrayList<Card>> entry : cards.entrySet()) {
+        for (Map.Entry<String, ArrayList<Card>> entry : player.getHand().entrySet()) {
             //System.out.println(entry.getKey() + "/" + entry.getValue());
             for (Card card : entry.getValue()) {
-                System.out.println(card.getRank() + card.getSuit());
+                //System.out.println(card.getRank() + card.getSuit());
                 CardLabel cardLabel = new CardLabel(card, revealed);
                 addCard(cardLabel, index);
                 cardLabel.setRevealed(true);
@@ -61,15 +61,14 @@ public class CardsPanel extends JLayeredPane implements MouseListener {
         cardLabel.setLocation(100 + SPACING * index, 80);
     }
 
-    public final void updatePanels() {
-        updateHand();
+    public final void updatePanels(Player player) {
+        updateHand(player);
         //updateComplete();
     }
 
-    public void updateHand() {
-        HashMap<String, ArrayList<Card>> hand = player.getHand();
-        setCards(hand, true);
-        updateInfoBox(remainingCardsCount, hand.size());
+    public void updateHand(Player player) {
+        setCards(player, true);
+        updateInfoBox(remainingCardsCount, player.getHand().size());
     }
 
     private void updateInfoBox(JLabel label, int num) {
@@ -84,7 +83,7 @@ public class CardsPanel extends JLayeredPane implements MouseListener {
         return isSelected;
     }
 
-    private void updatePreferredSize(int numCards) {
+    public void updatePreferredSize(int numCards) {
         int width = (50 + (numCards - 1) * SPACING) + CardLabel.CARD_WIDTH;
         setPreferredSize(new Dimension(width, CardLabel.CARD_HEIGHT));
     }
@@ -110,13 +109,19 @@ public class CardsPanel extends JLayeredPane implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         JLabel label = (JLabel) e.getSource();
+        zindex = getComponentZOrder(label);
+
+        label.setSize(225, 350);
         label.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+        setLayer(label, highestLayer());
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         JLabel label = (JLabel) e.getSource();
-        label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        label.setSize(150, 350);
+        label.setBorder(null);
+        setLayer(label, zindex);
 
     }
 }

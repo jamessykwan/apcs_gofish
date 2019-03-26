@@ -7,10 +7,10 @@ public class CardLabel extends JLabel {
 
     final public static int CARD_HEIGHT = 350;
 
-    final private static ImageIcon BACK = new ImageIcon("back.png");
+    final private static ImageIcon BACK = new ImageIcon("src/images/back.png");
 
 
-    final private static Icon EMPTY = new ImageIcon("back.png");
+    final private static Icon EMPTY = new ImageIcon("src/images/back.png");
 
     private Card card;
 
@@ -25,6 +25,8 @@ public class CardLabel extends JLabel {
         icon = card.getImage();
         setRevealed(revealed);
         setBorder(border);
+        setOpaque(true);
+        setBackground(Color.GRAY);
     }
 
     public Card getCard() {

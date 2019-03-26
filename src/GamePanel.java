@@ -22,7 +22,7 @@ public class GamePanel extends JPanel {
         CardsPanel panel = new CardsPanel();
         panel.initComponents();
         panel.setOpaque(true);
-        panel.setCards(player.getHand(), true);
+        panel.setCards(player, true);
         panel.addMouseListener(listener);
         this.add(panel);
         playerPanels.put(player, panel);
